@@ -20,7 +20,16 @@ set_target_properties( "${LIBNAME}"
     DEFINE_SYMBOL Crypto_EXPORTS
     )
 
-target_link_libraries( "${LIBNAME}" Foundation ${OPENSSL_LIBRARIES} )
+if (WIN32 AND NOT POCO_STATIC)
+    set(ADDITIONAL_LIBRARIES
+        "Ws2_32.lib"
+        "crypt32.lib")
+endif ()
+
+target_link_libraries(
+    "${LIBNAME}" Foundation ${OPENSSL_LIBRARIES}
+    ${ADDITIONAL_LIBRARIES})
+
 target_include_directories( "${LIBNAME}"
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
