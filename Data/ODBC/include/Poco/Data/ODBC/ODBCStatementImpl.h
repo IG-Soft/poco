@@ -60,7 +60,7 @@ protected:
 		/// Returns the number of affected rows.
 		/// Used to find out the number of rows affected by insert or update.
 
-	const MetaColumn& metaColumn(std::size_t pos) const;
+	const MetaColumn& metaColumn(std::size_t pos, size_t dataSet) const;
 		/// Returns column meta data.
 
 	bool hasNext();
@@ -140,9 +140,10 @@ private:
 
 	void getData();
 
-	void addPreparator();
-	void fillColumns();
+	bool addPreparator(bool addAlways = true);
+	void fillColumns(size_t dataSetPos);
 	void checkError(SQLRETURN rc, const std::string& msg="");
+	bool nextResultSet();
 
 	const SQLHDBC&        _rConnection;
 	const StatementHandle _stmt;

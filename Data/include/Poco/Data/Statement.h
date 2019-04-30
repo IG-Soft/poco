@@ -670,7 +670,7 @@ inline const AbstractExtractionVec& Statement::extractions() const
 
 inline const MetaColumn& Statement::metaColumn(std::size_t pos) const
 {
-	return _pImpl->metaColumn(pos);
+	return _pImpl->metaColumn(pos, _pImpl->currentDataSet());
 }
 
 

@@ -169,7 +169,7 @@ protected:
 		/// some ODBC drivers when this function is called after a select statement
 		/// execution).
 
-	virtual const MetaColumn& metaColumn(std::size_t pos) const = 0;
+	virtual const MetaColumn& metaColumn(std::size_t pos, size_t dataSet) const = 0;
 		/// Returns column meta data.
 
 	const MetaColumn& metaColumn(const std::string& name) const;
@@ -230,12 +230,12 @@ protected:
 		/// Returns the number of rows extracted so far for the data set.
 		/// Default value indicates current data set (if any).
 
-	void makeExtractors(std::size_t count);
+	virtual void makeExtractors(std::size_t count);
 		/// Determines the type of the internal extraction container and
 		/// calls the extraction creation function (addInternalExtract)
 		/// with appropriate data type and container type arguments.
-		/// 
-		/// This function is only called in cases when there is data 
+		///
+		/// This function is only called in cases when there is data
 		/// returned by query, but no data storage supplied by user.
 		///
 		/// The type of the internal container is determined in the
@@ -251,6 +251,9 @@ protected:
 		/// - std::deque (default)
 		/// - std::vector
 		/// - std::list
+
+	void makeExtractors(std::size_t count, const Position& position);
+		/// Create extractors for the specified dataset
 
 	SessionImpl& session();
 		/// Rteurns session associated with this statement.

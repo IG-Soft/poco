@@ -312,9 +312,15 @@ void StatementImpl::setStorage(const std::string& storage)
 
 void StatementImpl::makeExtractors(std::size_t count)
 {
+	// type cast is needed when size_t is 64 bit
+	makeExtractors(count, static_cast<Position::Type>(currentDataSet()));
+}
+
+void StatementImpl::makeExtractors(std::size_t count, const Position& position)
+{
 	for (int i = 0; i < count; ++i)
 	{
-		const MetaColumn& mc = metaColumn(i);
+		const MetaColumn& mc = metaColumn(i, position.value());
 		switch (mc.type())
 		{
 			case MetaColumn::FDT_BOOL:
@@ -363,7 +369,7 @@ const MetaColumn& StatementImpl::metaColumn(const std::string& name) const
 	std::size_t cols = columnsReturned();
 	for (std::size_t i = 0; i < cols; ++i)
 	{
-		const MetaColumn& column = metaColumn(i);
+		const MetaColumn& column = metaColumn(i, currentDataSet());
 		if (0 == icompare(column.name(), name)) return column;
 	}
 
